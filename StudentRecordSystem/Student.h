@@ -1,32 +1,45 @@
 #pragma once
+#ifndef STUDENT_H
+#define STUDENT_H
 
-#include <iostream>
 #include <fstream>
-#include <cstdlib>
-#include <ctime>
+#include <string>
 using namespace std;
 
+// ================= CONSTANTS =================
+const int STUDENT_MAX = 100;
+const int NUM_ASSIGNMENTS = 5;
+const int NUM_COURSES = 3;
+
 // ================= STRUCT =================
-struct Student {
+struct Student
+{
     string firstName;
     string lastName;
-    int id;             // student id
-    double grade;       // stores computed average
-};
+    int id;
 
-// ================= CONSTANTS =================
-const int MAX_STUDENTS = 25;
-const int NUM_ASSIGNMENTS = 5;
+    double assignments[NUM_ASSIGNMENTS];
+    double average;
+
+    string courses[NUM_COURSES];
+};
 
 // ================= FUNCTION PROTOTYPES =================
 void loadStudents(Student students[], int& count);
-void displayAllStudentInfo(double grades[][NUM_ASSIGNMENTS], Student students[], int count);
+void displayStudents(Student students[], int count);
 
-void generateGrades(double grades[][NUM_ASSIGNMENTS], int count);
-void calculateAverages(double grades[][NUM_ASSIGNMENTS], Student students[], int count);
+void calculateAverage(Student* s);
+void calculateAllAverages(Student students[], int count);
 
-void updateAssignment(double grades[][NUM_ASSIGNMENTS], Student students[], int count);
-void addStudent(Student students[], int& count, double grades[][NUM_ASSIGNMENTS]);
+void searchByCourse(Student students[], int count);
+void showAssignmentAverage(Student students[], int count);
+void showHardestAssignment(Student students[], int count);
+void courseEnrollment(Student students[], int count);
+
+void sortByAverage(Student students[], int count);
+
+void addStudent(Student students[], int& count);
+void atRiskStudents(Student students[], int count);
 void saveStudents(Student students[], int count);
 
-void highlightSearch(double grades[][NUM_ASSIGNMENTS], Student students[], int count);
+#endif

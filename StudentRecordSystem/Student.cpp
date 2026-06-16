@@ -1,115 +1,98 @@
 #include "Student.h"
 
+using namespace std;
+
 // ================= LOAD =================
 // Reads student text file data into the array until full
 void loadStudents(Student students[], int& count)
 {
     ifstream inputFile("students.txt");
 
-    while (count < MAX_STUDENTS &&
+    while (count < STUDENT_MAX &&
         inputFile >> students[count].firstName
         >> students[count].lastName
         >> students[count].id
-        >> students[count].grade)
+        >> students[count].average)
     {
         count++;
+    }
+
+    for (int i = 0; i < NUM_ASSIGNMENTS; i++)
+    {
+        inputFile >> students[count].assignments[i];
+    }
+
+    for (int i = 0; i < NUM_COURSES; i++)
+    {
+        inputFile >> students[count].courses[i];
     }
 
     inputFile.close();
 }
 
-// ================= DISPLAY ALL STUDENT INFO =================
-// Prints headers and loops through arrays to display all records and grades
-void displayAllStudentInfo(double grades[][NUM_ASSIGNMENTS], Student students[], int count)
+// ================= DISPLAY =================
+void displayStudents(Student students[], int count)
 {
-    cout << "\n===== ALL STUDENT RECORDS =====\n";
-    cout << "\033[31m" << "ID\tFName\t\tLName\t\t";
+    cout << "\nID\tLName\t\tFName\t\t";
 
     for (int j = 0; j < NUM_ASSIGNMENTS; j++)
-    {
-        cout << "A" << (j + 1) << "\t";
-    }
-    cout << "AVG \033[0m\n";
+        cout << "A" << j + 1 << "\t";
+
+    cout << "AVG\tC1\tC2\tC3\n";
 
     for (int i = 0; i < count; i++)
     {
         cout << students[i].id << "\t"
-            << students[i].firstName << "      \t"
-            << students[i].lastName << "      \t";
+            << students[i].lastName << "      \t"
+            << students[i].firstName << "      \t";
 
         for (int j = 0; j < NUM_ASSIGNMENTS; j++)
-        {
-            cout << grades[i][j] << "\t";
-        }
+            cout << students[i].assignments[j] << "\t";
 
-        cout << students[i].grade << endl;
+        cout << students[i].average << "\t";
+
+        for (int j = 0; j < NUM_COURSES; j++)
+            cout << students[i].courses[j] << "\t";
+
+        cout << endl;
     }
 }
 
-// ================= GENERATE GRADES =================
-// Fills the 2D array with random grade percentages between 60 and 100
-void generateGrades(double grades[][NUM_ASSIGNMENTS], int count)
-{
-    for (int i = 0; i < count; i++)
-    {
-        for (int j = 0; j < NUM_ASSIGNMENTS; j++)
-        {
-            grades[i][j] = rand() % 41 + 60;
-        }
-    }
-}
+void calculateAverage(Student* s);
+void calculateAllAverages(Student students[], int count);
+
+void searchByCourse(Student students[], int count);
+void showAssignmentAverage(Student students[], int count);
+void showHardestAssignment(Student students[], int count);
+void courseEnrollment(Student students[], int count);
+
+void sortByAverage(Student students[], int count);
+
+void atRiskStudents(Student students[], int count);
+
 
 // ================= CALCULATE AVERAGES =================
-// Computes row averages from the 2D grades array and saves them to the struct
-void calculateAverages(double grades[][NUM_ASSIGNMENTS], Student students[], int count)
+void calculateAverages(Student* s)
 {
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < STUDENT_MAX; i++)
     {
         double sum = 0;
 
         for (int j = 0; j < NUM_ASSIGNMENTS; j++)
         {
-            sum += grades[i][j];
+            sum += s->average[i][j];
         }
 
-        students[i].grade = sum / NUM_ASSIGNMENTS; // derived value
+
+        s[i].average = sum / NUM_ASSIGNMENTS; // derived value
     }
-}
-
-// ================= UPDATE ASSIGNMENT =================
-// Finds a student by ID and overwrites a single assignment score
-void updateAssignment(double grades[][NUM_ASSIGNMENTS], Student students[], int count)
-{
-    int id, assignment;
-    double newGrade;
-
-    cout << "Enter student ID: ";
-    cin >> id;
-
-    cout << "Enter assignment (1-5): ";
-    cin >> assignment;
-
-    cout << "Enter new grade: ";
-    cin >> newGrade;
-
-    for (int i = 0; i < count; i++)
-    {
-        if (students[i].id == id)
-        {
-            grades[i][assignment - 1] = newGrade; // update single cell
-            cout << "Assignment updated!\n";
-            return;
-        }
-    }
-
-    cout << "Student not found.\n";
 }
 
 // ================= ADD STUDENT =================
 // Appends a new student to the array and initializes random grades for them
 void addStudent(Student students[], int& count, double grades[][NUM_ASSIGNMENTS])
 {
-    if (count >= MAX_STUDENTS) {
+    if (count >= STUDENT_MAX) {
 
         cout << "\nMAX reached, cannot add more students!!\n";
 

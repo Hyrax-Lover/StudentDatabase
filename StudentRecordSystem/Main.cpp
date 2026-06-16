@@ -2,71 +2,84 @@
 #include "Student.h"
 using namespace std;
 
-// ================= MAIN =================
 int main()
 {
-    srand(time(0));
+	Student students[STUDENT_MAX];
+	int count = 0;
 
-    Student students[MAX_STUDENTS];
-    double grades[MAX_STUDENTS][NUM_ASSIGNMENTS];
+	loadStudents(students, count);
+	calculateAllAverages(students, count);
 
-    int count = 0;
+	int choice;
 
-    loadStudents(students, count);
-    generateGrades(grades, count);  // initialize grades for existing students
+	do
+	{
+		cout << "\n===== STUDENT DATABASE =====\n";
+		cout << "1. Display\n";
+		cout << "2. Search by Course\n";
+		cout << "3. Assignment Averages\n";
+		cout << "4. Hardest Assignment\n";
+		cout << "5. Course Enrollment\n";
+		cout << "6. Sort by Averages\n";
+		cout << "7. Add Student\n";
+		cout << "8. At Risk Students\n";
+		cout << "9. Exit\n";
+		cout << endl;
+		cout << "Enter Choice: ";
+		cin >> choice;
 
-    int choice;
+		switch (choice)
+		{
+		case 1:
+		{
+			displayStudents(students, count);
+			break;
+		}
+		case 2:
+		{
+			//...........
+			//...........
+			break;
+		}
+		case 3:
+		{
+			//...........
+			//...........
+			break;
+		}
+		case 4:
+		{
+			//...........
+			//...........
+			break;
+		}
+		case 5:
+		{
+			//...........
+			//...........
+			break;
+		}
+		case 6:
+		{
+			//...........
+			//...........
+			break;
+		}
+		case 7:
+		{
+			//...........
+			//...........
+			break;
+		}
+		case 8:
+		{
+			//...........
+			//...........
+			break;
+		}
+		default:
+			cout << "\nInvalid choice!" << endl;
+		}//end of swithch
 
-    do
-    {
-        cout << "\n===== STUDENT SYSTEM =====\n";
-        cout << "1. Display All Students Info\n";
-        cout << "2. Update Assignment\n";
-        cout << "3. Add Student\n";
-        cout << "4. Save to File\n";
-        cout << "5. Highlight Student / Assignment\n";
-        cout << "6. Exit\n";
-        cout << "Enter choice: ";
-
-
-        cin >> choice;
-
-        switch (choice)
-        {
-        case 1:
-            calculateAverages(grades, students, count);
-            displayAllStudentInfo(grades, students, count);
-            break;
-
-        case 2:
-            updateAssignment(grades, students, count);
-            calculateAverages(grades, students, count); // recompute after change
-            displayAllStudentInfo(grades, students, count);
-            break;
-
-        case 3:
-            addStudent(students, count, grades); // also initializes grades row
-            calculateAverages(grades, students, count);
-            displayAllStudentInfo(grades, students, count);
-            break;
-
-        case 4:
-            saveStudents(students, count);
-            break;
-
-        case 5:
-            highlightSearch(grades, students, count);
-            break;
-
-        case 6:
-            cout << "Goodbye!\n";
-            break;
-
-        default:
-            cout << "Invalid choice!\n";
-        }
-
-    } while (choice != 6);
-
-    return 0;
-}
+	} while (choice != 9);
+}//end of main
